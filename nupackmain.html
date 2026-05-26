@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>NUPACK Automation</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<script type="text/javascript" src="https://cdn.socket.io/3.1.3/socket.io.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+    var socket = io("http://172.16.11.91:4000");
+    // , {
+    //   autoConnect: false,
+    //   transportOptions: {
+    //     polling: {
+    //       extraHeaders: {
+    //         BearerToken: `${token}`
+    //       }
+    //     }
+    //   }
+    // });
+    window.addEventListener("load",function(){
+        console.log("loaded!!")
+    })
+    socket.on('result',function(data){
+        document.getElementById("resultDiv").innerText += data +'\r\n';
+    });
+    function sendall(){
+        var data = $('#itemcodes').val();
+        console.log('send data : ' +data);
+        socket.emit('sendall',data);
+    }
+    function senditemcodes(){
+        var data = $('#itemcodes').val();
+        console.log('send data : ' +data);
+        socket.emit('itemcode',data);
+    }
+    function postitem(){
+        var data = '';
+        console.log('post Item');
+        socket.emit('postitem',data);
+    }
+    function postitemwarehouse(){
+        var data = '';
+        console.log('post Item');
+        socket.emit('postitemwarehouse',data);
+    }
+    function getcylindercodes(){
+        var data = $('#itemcodes').val();
+        console.log('get cylinder code : ' + data);
+        socket.emit('getcylindercode',data);
+    }
+    function getcylinderitem(){
+        var data = '';
+        console.log('get cylinder item : ' + data);
+        socket.emit('getcylinderitem',data);
+    }
+    function postcylinderitem(){
+        var data = '';
+        console.log('post cylinder item : ' + data);
+        socket.emit('postcylinderitem',data);
+    }
+    function postcylinderwarehouse(){
+        var data ='';
+        console.log('post cylinder warehouse : ' + data);
+        socket.emit('postcylinderwarehouse',data);
+    }
+    function postrelateditem(){
+        var data ='';
+        console.log('post related item : ' + data);
+        socket.emit('postrelateditem',data);
+    }
+    function postdeleteall(){
+        var data ='';
+        console.log('Delete all, Reset : ' + data);
+        socket.emit('postdeleteall',data);
+    }
+    function test(){
+        var data ='';
+        console.log('test : ' + data);
+        socket.emit('test',data);
+    }
+</script>
+<body style="font-family:verdana;background-color:rgb(32, 31, 31);color: white;">
+    <h1 style="color:#E1141D;font-size:28px;">NUPACK AUTOMATION & ITEM COPY</h1>
+    <div style="font-size:larger;">
+        <p style="font-size:larger;font-style:italic">
+            Please note: this is a Nupack Item copy system
+        </p>
+        <p>
+            Using ITEM CODE We can copy to nupack 500 division<br />
+            You can:
+        </p>
+        <ul>
+            <li>Getting Item / Cylinder, Posting Item/Cylinder and warehouse</li>
+            <li>Posting related Item</li>
+            <li>How to use</li>
+            <div style="font-size:small;">
+                <ul>
+                    <li>You can put down item code to copy</li>
+                    <li>[{"artcode":"10055107","division":200},{"artcode":"10055107","division":200}]</li>
+                    <li>(Do All)  --> do all at once</li>
+                    <li>(the other buttons)  --> do it each , total 8 buttons</li>
+                </ul>
+            </div>
+        </ul> 
+    </div>
+    <div>
+        <table>
+            <tr>
+                <td width="100">ITEM CODE:</td>
+                <td width="100"><input type="text" id="itemcodes" value='[{"artcode":"10055107","division":200}]' size="70" /></td>
+                <td width="100"><input type="button" onclick="senditemcodes()" value="1.Get Data" /></td>
+                <td width="100"><input type="button" onclick="senditemcodes()" value="( Do All )" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td width="100">POST</td>
+                <td width="20"><input type="button" onclick="postitem()" value="2.POST ITEM" size="10" /></td>
+                <td width="20"><input type="button" onclick="postitemwarehouse()" value="3.POST Warehouse" size="100" /></td>
+
+            </tr>
+        </table>
+        <hr />
+        <table>
+            <tr>
+                <td width="100">Cylinder CODE:</td>
+                <td width="100"><input type="button" onclick="getcylindercodes()" value="4.Get Cylinder code" /></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td width="100">Cylinder POST:</td>
+                <td width="20"><input type="button" onclick="getcylinderitem()" value="5.GET Cylinder ITEM" size="10" /></td>
+                <td width="20"><input type="button" onclick="postcylinderitem()" value="6.POST Cylinder" size="50" /></td>
+                <td width="20"><input type="button" onclick="postcylinderwarehouse()" value="7.POST Warehouse" size="50" /></td>
+            </tr>
+        </table>
+        <hr />
+        <table>
+            <tr>
+                <td width="100">Related Item:</td>
+                <td width="20"><input type="button" onclick="postrelateditem()" value="8.POST Related" size="100" /></td>
+            </tr>
+        </table>
+        <hr />
+        <table>
+            <tr>
+                <td width="100">Option:</td>
+                <td width="20"><input type="button" onclick="postdeleteall()" value="9.DELETE ALL" size="50" /></td>
+                <td width="20"><input type="button" onclick="test()" value="TEST" size="50" /></td>
+            </tr>
+        </table>
+    </div>
+    <hr />
+    <div id="resultDiv" style="font-family:courier;" >
+    </div>
+</body>
+</html>
